@@ -1,0 +1,7 @@
+This is a test file for the getnextline function.
+It contains multiple lines with varying lengths.
+The goal is to ensure that getnextline can correctly read each line until the end of the file.
+Additionally, there are some empty lines and lines with only whitespace characters to handle edge cases.
+The function should handle different newline characters (\n, \r\n) properly as well.
+Let's add a longer line to test the function's ability to handle large buffers and dynamic memory allocation.
+This should cover most scenarios, but feel free to add more specific cases if needed.
