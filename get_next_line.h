@@ -6,7 +6,7 @@
 /*   By: nboer <nboer@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 10:55:30 by nboer             #+#    #+#             */
-/*   Updated: 2024/06/16 13:19:45 by nboer            ###   ########.fr       */
+/*   Updated: 2024/07/01 18:33:45 by nboer            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ typedef struct s_list
 }					t_list;
 
 char	*get_next_line(int fd);
-
 void	add_newnode_to_back(t_list **lst, char *buffer);
 size_t	ft_strlcat(char *dest, const char *src, size_t size);
 size_t	ft_strlen(const char *str);
