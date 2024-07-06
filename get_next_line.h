@@ -6,7 +6,7 @@
 /*   By: nboer <nboer@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 10:55:30 by nboer             #+#    #+#             */
-/*   Updated: 2024/07/01 18:33:45 by nboer            ###   ########.fr       */
+/*   Updated: 2024/07/06 15:30:39 by nboer            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 # include <stdio.h>
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 5
+#  define BUFFER_SIZE 15
 # endif
 
 typedef struct s_list

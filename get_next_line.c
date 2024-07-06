@@ -6,7 +6,7 @@
 /*   By: nboer <nboer@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 10:35:32 by nboer             #+#    #+#             */
-/*   Updated: 2024/07/01 18:55:15 by nboer            ###   ########.fr       */
+/*   Updated: 2024/07/06 17:53:34 by nboer            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,75 @@ int		check_line(t_list *list)
 		return (0);
 	else 
 		return (1);
+}
+
+int	get_len(t_list *lst)
+{
+	int		i;
+	int		len;
+
+	len = 0;
+	while (lst)
+	{
+		i = 0;
+		while (lst->buf[i] != '\0')
+		{	
+			if (lst->buf[i] == '\n')
+			{
+				len++;
+				printf("%i\n", len);
+				return (len);
+			}
+			i++;
+			len++;
+		}
+		lst = lst->next;
+	}
+	return (len);
+}
+
+void	copy_line(t_list *lst, char *line)
+{
+	int	i;
+	int	j;
+	
+	j = 0;
+	if(!lst)
+		return ;
+	while (lst)
+	{
+		i = 0;
+		while (lst->buf[i] != '\0')
+		{
+			if (lst->buf[i] == '\n')
+				{
+					line[j] = '\n';
+					j++;
+					line[j] = '\0';
+					return ;
+				}
+			line[j] = lst->buf[i];
+			i++;
+			j++;
+		}
+		lst = lst->next;
+	}
+	line[j] = '\0';
+}
+char	*get_line(t_list *lst) //removed a * before every lst in this function
+{
+	char	*line;
+	int		len;
+
+	if (!lst)
+		return (NULL);
+	len = get_len(lst);
+	line = malloc(len + 1);
+	if (!line)
+		return (NULL);
+	copy_line(lst, line);
+	//split_line(*lst, line);
+	return (line);
 }
 
 void	add_newnode_to_back(t_list **lst, char *buffer)
@@ -41,8 +110,9 @@ void	add_newnode_to_back(t_list **lst, char *buffer)
 	}
 	templst = *lst;
 	while (templst->next != NULL)
-		templst = templst->next;
-	templst->next = new_node;
+		templst = templst->next; //use a templist to traverse the linkedlist.
+	templst->next = new_node; // assign the new node to the last pointer - that was pointing to null before.
+	//printf("%s\n", new_node->buf);
 }
 
 void	make_lst(t_list **lst, int fd)
@@ -55,63 +125,17 @@ void	make_lst(t_list **lst, int fd)
 		buffer = malloc((BUFFER_SIZE + 1) * sizeof(char));
 		if (!buffer)
 			return ;
-		bytes_read = read(fd, buffer, BUFFER_SIZE);
-		if (bytes_read <= 0)
+		bytes_read = read(fd, buffer, BUFFER_SIZE); // read FROM the file descriptor, INTO the buffer variable.. a BUFFER_SIZE amount of bytes.
+		if (bytes_read <= 0) // if reached the end of document
 		{
 			free(buffer);
 			return ;
 		}
-		buffer[BUFFER_SIZE] = '\0';
+		buffer[BUFFER_SIZE] = '\0'; //null terminate the written bytes
 		add_newnode_to_back(lst, buffer);
 	}
 	return ;
 }
-
-int	get_len(t_list *lst)
-{
-	int		i;
-	int		len;
-
-	len = 0;
-	while (lst->next != NULL)
-	{
-		i = 0;
-		while (lst->buf[i] != '\0')
-		{	
-			if (lst->buf[i] == '\n')
-			{
-				len++;
-				return (len);
-			}
-			i++;
-			len++;
-		}
-		lst = lst->next;
-	}
-	return (len);
-}
-
-char	*get_line(t_list **lst)
-{
-	char	*line;
-	int		len;
-	t_list	*next;
-
-	len = get_len(*lst);
-	line = malloc(len + 1);
-	while ((*lst)->next != NULL)
-	{
-		ft_strlcat(line, (*lst)->buf, len);
-		//printf("%s\n", line);
-		next = (*lst)->next;
-		free((*lst)->buf);
-		free(*lst);
-		*lst = next;
-	}
-	split_line(*lst, line);
-	return (line);
-}
-
 char	*get_next_line(int fd)
 {
 	static t_list	*lst;
@@ -122,6 +146,6 @@ char	*get_next_line(int fd)
 	make_lst(&lst, fd); //make a linked list
 	if (lst == NULL)
 		return (NULL);
-	next_line = get_line(&lst);
+	next_line = get_line(lst); //CHANGE: FROM &LIST
 	return (next_line);
 }
