@@ -6,13 +6,13 @@
 /*   By: nboer <nboer@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 10:35:32 by nboer             #+#    #+#             */
-/*   Updated: 2024/07/07 18:47:51 by nboer            ###   ########.fr       */
+/*   Updated: 2024/07/13 21:04:57 by nboer            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char	*get_line(t_list *lst)
+char	*get_one_line(t_list *lst)
 {
 	char	*line;
 	int		len;
@@ -36,15 +36,15 @@ void	add_newnode_to_back(t_list **lst, char *buffer)
 	new_node = malloc(sizeof(t_list));
 	if (!new_node)
 		return ;
-	new_node->buf = buffer;
-	new_node->next = NULL;
 	if (!last_node)
 		*lst = new_node;
 	else
 		last_node->next = new_node;
+	new_node->buf = buffer;
+	new_node->next = NULL;
 }
 
-void	format_lst(char *buf, t_list **lst, t_list *new_node)
+void	format_lst(char *buf, t_list **lst, t_list *new_node) //
 {
 	t_list	*templst;
 
@@ -58,7 +58,7 @@ void	format_lst(char *buf, t_list **lst, t_list *new_node)
 		*lst = templst;
 	}
 	*lst = NULL;
-	if (new_node->buf[0])
+	if (new_node != NULL && new_node->buf[0])
 		*lst = new_node;
 	else
 	{
@@ -81,12 +81,13 @@ void	make_lst(t_list **lst, int fd)
 		if (bytes_read <= 0)
 		{
 			free(buffer);
+			if (bytes_read < 0)
+				format_lst(NULL, lst, NULL);
 			return ;
 		}
 		buffer[bytes_read] = '\0'; 
 		add_newnode_to_back(lst, buffer);
 	}
-	return ;
 }
 
 char	*get_next_line(int fd)
@@ -94,12 +95,15 @@ char	*get_next_line(int fd)
 	static t_list	*lst;
 	char			*next_line;
 
-	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, NULL, 0) < 0)
+	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, &next_line, 0) < 0)
+	{
+		format_lst(NULL, &lst, NULL);
 		return (NULL);
+	}
 	make_lst(&lst, fd);
 	if (!lst)
 		return (NULL);
-	next_line = get_line(lst);
+	next_line = get_one_line(lst);
 	get_remainder(&lst);
 	return (next_line);
 }

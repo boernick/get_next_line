@@ -6,7 +6,7 @@
 /*   By: nboer <nboer@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/15 15:35:39 by nboer             #+#    #+#             */
-/*   Updated: 2024/07/07 18:58:10 by nboer            ###   ########.fr       */
+/*   Updated: 2024/07/13 21:01:12 by nboer            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ t_list	*traverse_lst(t_list *lst)
 {
 	if (!lst)
 		return (NULL);
-	while (lst->next != NULL)
+	while (lst->next)
 		lst = lst->next;
 	return (lst);
 }
@@ -70,9 +70,9 @@ void	copy_line(t_list *lst, char *line)
 	int	i;
 	int	j;
 
-	j = 0;
 	if (!lst)
 		return ;
+	j = 0;
 	while (lst)
 	{
 		i = 0;
@@ -109,15 +109,12 @@ void	get_remainder(t_list **lst)
 	last_node = traverse_lst(*lst);
 	i = 0;
 	j = 0;
-	while ((last_node)->buf[i] && (last_node)->buf[i] != '\n')
-		i++;
-	if (last_node->buf[i])
-		i++;
-	while (last_node->buf[i])
-		buf[j++] = last_node->buf[i++]; 
+	while (last_node->buf[i] && last_node->buf[i] != '\n')
+		++i;
+	while (last_node->buf[i] && last_node->buf[++i])
+		buf[j++] = last_node->buf[i];
 	buf[j] = '\0';
 	new_node->buf = buf;
 	new_node->next = NULL;
 	format_lst(buf, lst, new_node);
-	return ;
 }
