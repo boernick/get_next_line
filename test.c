@@ -6,7 +6,7 @@
 /*   By: nboer <nboer@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/15 15:36:42 by nboer             #+#    #+#             */
-/*   Updated: 2024/07/13 20:33:10 by nboer            ###   ########.fr       */
+/*   Updated: 2024/07/13 21:27:39 by nboer            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int main(void)
 	printf("%s%i\n", "buf size: ", BUFFER_SIZE);
 
     // Open the file 'text.txt' for reading
-    fd = open("read_error.txt", O_RDONLY);
+    fd = open("text.txt", O_RDONLY);
     if (fd < 0)
     {
         printf("%s\n", "Error opening file");
