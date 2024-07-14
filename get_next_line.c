@@ -6,7 +6,7 @@
 /*   By: nboer <nboer@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 10:35:32 by nboer             #+#    #+#             */
-/*   Updated: 2024/07/13 21:04:57 by nboer            ###   ########.fr       */
+/*   Updated: 2024/07/14 14:25:15 by nboer            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,12 @@ void	add_newnode_to_back(t_list **lst, char *buffer)
 	new_node = malloc(sizeof(t_list));
 	if (!new_node)
 		return ;
+	new_node->buf = buffer;
+	new_node->next = NULL;
 	if (!last_node)
 		*lst = new_node;
 	else
 		last_node->next = new_node;
-	new_node->buf = buffer;
-	new_node->next = NULL;
 }
 
 void	format_lst(char *buf, t_list **lst, t_list *new_node) //
